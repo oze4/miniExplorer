@@ -2,9 +2,12 @@ FUNCTION Start-miniExplorer
 { 
 
     PARAM(
-        [Parameter()]
+        [Parameter(ParameterSetName = 'Files')]
         [ValidateScript({ $($_).ToCharArray() -notcontains "." })]
-        [string]$ShowFilesWithExtensionOnly
+        [string]$ShowFilesWithExtensionOnly,                        # Use to show files with a certain extension
+
+        [Parameter(ParameterSetName = "Dirs")]
+        [switch]$ShowDirectoriesOnly                                # Use to only show directories
     )
 
     function Show-miniExplorer_psf {
@@ -80,33 +83,35 @@ FUNCTION Start-miniExplorer
                         $listviewMain.Items[$counter].Tag = "Folder"
                         $listviewMain.Items[$counter].Name = $($_.FullName)
                     }
-				
-                    IF (($_.PSIsContainer -eq $false) -and ($ShowFilesWithExtensionOnly -ne $null))
+
+                    IF (-not $ShowDirectoriesOnly)
                     {
-                        $theExtension = "." + $ShowFilesWithExtensionOnly
+				
+                        IF (($_.PSIsContainer -eq $false) -and ($ShowFilesWithExtensionOnly -ne $null))
+                        {
+                            $theExtension = "." + $ShowFilesWithExtensionOnly
 					
-                        IF ($_.Extension -eq $theExtension)
+                            IF ($_.Extension -eq $theExtension)
+                            {
+                                $listviewMain.Items.Add($objName)
+                                [array]$items = $listviewMain.Items
+                                $zi = [array]::IndexOf($items, $objName)
+                                $listviewMain.Items[$zi].Name = $($_.FullName)
+                                $listviewMain.Items[$zi].Tag = "File"
+                                $listviewMain.Items[$zi].ImageIndex = 2
+                            }
+					
+                        }
+				
+                        IF (($_.PSIsContainer -eq $false) -and (!$ShowFilesWithExtensionOnly))
                         {
                             $listviewMain.Items.Add($objName)
-                            [array]$items = $listviewMain.Items
-                            $zi = [array]::IndexOf($items, $objName)
-                            $listviewMain.Items[$zi].Name = $($_.FullName)
-                            $listviewMain.Items[$zi].Tag = "File"
-                            $listviewMain.Items[$zi].ImageIndex = 2
+                            $listviewMain.Items[$counter].ImageIndex = 2
+                            $listviewMain.Items[$counter].Tag = "File"
+                            $listviewMain.Items[$counter].Name = $($_.FullName)
                         }
-					
-                    }
-				
-                    IF (($_.PSIsContainer -eq $false) -and (!$ShowFilesWithExtensionOnly))
-                    {
-                        $listviewMain.Items.Add($objName)
-                        $listviewMain.Items[$counter].ImageIndex = 2
-                        $listviewMain.Items[$counter].Tag = "File"
-                        $listviewMain.Items[$counter].Name = $($_.FullName)
-                    }
-				
-                    $counter = ($counter + 1)
-				
+                    }				
+                    $counter = ($counter + 1)				
                 }
             }
 		
