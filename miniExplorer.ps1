@@ -1,5 +1,11 @@
-﻿FUNCTION Start-miniExplorer
+FUNCTION Start-miniExplorer
 { 
+
+    PARAM(
+        [Parameter()]
+        [ValidateScript({ $($_).ToCharArray() -notcontains "." })]
+        [string]$ShowFilesWithExtensionOnly
+    )
 
     function Show-miniExplorer_psf {
 
@@ -75,9 +81,9 @@
                         $listviewMain.Items[$counter].Name = $($_.FullName)
                     }
 				
-                    IF (($_.PSIsContainer -eq $false) -and ($ShowExtension -ne $null))
+                    IF (($_.PSIsContainer -eq $false) -and ($ShowFilesWithExtensionOnly -ne $null))
                     {
-                        $theExtension = "." + $ShowExtension
+                        $theExtension = "." + $ShowFilesWithExtensionOnly
 					
                         IF ($_.Extension -eq $theExtension)
                         {
@@ -91,7 +97,7 @@
 					
                     }
 				
-                    IF (($_.PSIsContainer -eq $false) -and (!$ShowExtension))
+                    IF (($_.PSIsContainer -eq $false) -and (!$ShowFilesWithExtensionOnly))
                     {
                         $listviewMain.Items.Add($objName)
                         $listviewMain.Items[$counter].ImageIndex = 2
