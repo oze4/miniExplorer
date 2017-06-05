@@ -153,7 +153,7 @@ FUNCTION Start-miniExplorer
         #
         $imageList.Images.Add("folder", $FolderIcon)
         $imageList.Images.Add("Drive", $DriveIcon)
-        $:imageList.Images.Add("File", $FileIcon)
+        $imageList.Images.Add("File", $FileIcon)
         #
         $listviewMain.LargeImageList = $imageList
         Refresh-ListView -drive
