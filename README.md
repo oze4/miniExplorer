@@ -6,4 +6,6 @@ If you have a PowerShell script that requires a user to select a .csv file, you 
     "Start-miniExplorer -ShowFilesWithExtensionOnly csv"
 This will only show .csv files within miniExplorer.
 
+# Screenshot
+
 ![Alt text](http://i.imgur.com/L8Te30g.png "miniExplorer")
