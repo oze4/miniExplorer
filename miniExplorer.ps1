@@ -1,12 +1,13 @@
 FUNCTION Start-miniExplorer
 { 
 
+    [CmdletBinding(DefaultParameterSetName="All")]
     PARAM(
-        [Parameter(ParameterSetName = 'Files')]
-        [ValidateScript({ $($_).ToCharArray() -notcontains "." })]
+        [Parameter(Mandatory = $false, ParameterSetName = 'Set1')]
+        [ValidateScript({ $($_).ToCharArray() -notcontains "." })]        
         [string]$ShowFilesWithExtensionOnly,                        # Use to show files with a certain extension
 
-        [Parameter(ParameterSetName = "Dirs")]
+        [Parameter(Mandatory = $false, ParameterSetName = 'Set2')]        
         [switch]$ShowDirectoriesOnly                                # Use to only show directories
     )
 
